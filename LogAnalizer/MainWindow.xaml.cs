@@ -56,7 +56,7 @@ public partial class MainWindow : Window
         if (Directory.Exists(items[0]))
         {
             _viewModel.LogsFolder = items[0];
-            _viewModel.StatusMessage = "Папка загружена. Нажмите 'Найти'.";
+            _viewModel.StatusMessage = "Folder loaded. Click 'Search'.";
         }
     }
 
@@ -64,7 +64,7 @@ public partial class MainWindow : Window
     {
         using var dialog = new FolderBrowserDialog
         {
-            Description = "Выберите папку с логами",
+            Description = "Select a folder with logs",
             UseDescriptionForTitle = true,
             ShowNewFolderButton = false
         };
@@ -72,7 +72,7 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
             _viewModel.LogsFolder = dialog.SelectedPath;
-            _viewModel.StatusMessage = "Папка загружена. Нажмите 'Найти'.";
+            _viewModel.StatusMessage = "Folder loaded. Click 'Search'.";
         }
     }
 
@@ -80,13 +80,13 @@ public partial class MainWindow : Window
     {
         if (string.IsNullOrWhiteSpace(_viewModel.LogsFolder) || !Directory.Exists(_viewModel.LogsFolder))
         {
-            _viewModel.StatusMessage = "Выберите папку с логами.";
+            _viewModel.StatusMessage = "Select a folder with logs.";
             return;
         }
 
         if (!TimeSpan.TryParse(_viewModel.DurationFilterText, CultureInfo.InvariantCulture, out var minDuration))
         {
-            _viewModel.StatusMessage = "Некорректный формат Duration.";
+            _viewModel.StatusMessage = "Invalid Duration format.";
             return;
         }
 
@@ -97,7 +97,7 @@ public partial class MainWindow : Window
             _viewModel.DurationTabs.Add(tab);
         }
 
-        _viewModel.StatusMessage = $"Найдено вкладок: {tabs.Count}.";
+        _viewModel.StatusMessage = $"Tabs found: {tabs.Count}.";
         _viewModel.SelectedDurationTab = _viewModel.DurationTabs.FirstOrDefault();
         UpdatePdfAnalysis();
     }
@@ -107,7 +107,7 @@ public partial class MainWindow : Window
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
             Filter = "PDF files (*.pdf)|*.pdf",
-            Title = "Выберите PDF файл"
+            Title = "Select a PDF file"
         };
 
         if (dialog.ShowDialog() != true)
@@ -116,17 +116,17 @@ public partial class MainWindow : Window
         }
 
         _viewModel.PdfFilePath = dialog.FileName;
-        _viewModel.PdfStatusMessage = "Чтение PDF...";
+        _viewModel.PdfStatusMessage = "Reading PDF...";
 
         try
         {
             _pdfLines = PdfAnalyzer.ExtractLines(dialog.FileName);
-            _viewModel.PdfStatusMessage = $"PDF загружен. Строк: {_pdfLines.Count}.";
+            _viewModel.PdfStatusMessage = $"PDF loaded. Lines: {_pdfLines.Count}.";
         }
         catch (Exception ex)
         {
             _pdfLines = new List<string>();
-            _viewModel.PdfStatusMessage = $"Ошибка PDF: {ex.Message}";
+            _viewModel.PdfStatusMessage = $"PDF error: {ex.Message}";
         }
 
         UpdatePdfAnalysis();

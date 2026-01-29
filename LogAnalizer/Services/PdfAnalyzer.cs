@@ -31,7 +31,7 @@ public static class PdfAnalyzer
             {
                 Index = index,
                 InteractionId = interaction.InteractionId,
-                Status = match is null ? "Нет совпадений" : "Найдено совпадение",
+                Status = match is null ? "No matches" : "Match found",
                 Evidence = match ?? ""
             });
             index++;
