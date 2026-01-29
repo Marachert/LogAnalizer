@@ -23,25 +23,23 @@
                     <TextBlock Text="Duration from" Margin="24,0,6,0" VerticalAlignment="Center" />
                     <TextBox Width="120" Text="{Binding DurationFromText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00" />
                     <TextBlock Text="to" Margin="8,0,6,0" VerticalAlignment="Center" />
-                    <TextBox Width="120" Text="{Binding DurationToText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00 (optional)" />
-                    <TextBlock Text="Tabs height" Margin="24,0,6,0" VerticalAlignment="Center" />
-                    <TextBox Width="80" Text="{Binding TabsSectionHeight, UpdateSourceTrigger=PropertyChanged}" ToolTip="Height in pixels" />
+                    <TextBox Width="120" Text="{Binding DurationToText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00" />
                     <Button Content="Search" Margin="8,0,0,0" Padding="12,4" Click="Search_OnClick" />
                     <TextBlock Text="{Binding StatusMessage}" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#666" />
                 </StackPanel>
 
-                <TabControl Grid.Row="2" ItemsSource="{Binding DurationTabs}" SelectedItem="{Binding SelectedDurationTab}" TabStripPlacement="Top" Height="{Binding TabsSectionHeight}">
+                <TabControl Grid.Row="2" ItemsSource="{Binding DurationTabs}" SelectedItem="{Binding SelectedDurationTab}" TabStripPlacement="Left">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Grid KeyboardNavigation.TabNavigation="Local">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" CanContentScroll="False">
-                                    <TabPanel IsItemsHost="True" Margin="0,0,0,4" />
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+                                    <TabPanel IsItemsHost="True" Margin="0,0,8,0" Orientation="Vertical" />
                                 </ScrollViewer>
-                                <ContentPresenter Grid.Row="1" ContentSource="SelectedContent" />
+                                <ContentPresenter Grid.Column="1" ContentSource="SelectedContent" />
                             </Grid>
                         </ControlTemplate>
                     </TabControl.Template>
