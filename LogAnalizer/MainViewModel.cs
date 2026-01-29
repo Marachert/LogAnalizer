@@ -8,7 +8,8 @@ namespace LogAnalizer;
 public class MainViewModel : INotifyPropertyChanged
 {
     private string? _logsFolder;
-    private string? _durationFilterText = "00:00:00";
+    private string? _durationFromText = "00:00:00";
+    private string? _durationToText = string.Empty;
     private string? _statusMessage;
     private DurationTabViewModel? _selectedDurationTab;
 
@@ -21,10 +22,16 @@ public class MainViewModel : INotifyPropertyChanged
         set => SetField(ref _logsFolder, value);
     }
 
-    public string? DurationFilterText
+    public string? DurationFromText
     {
-        get => _durationFilterText;
-        set => SetField(ref _durationFilterText, value);
+        get => _durationFromText;
+        set => SetField(ref _durationFromText, value);
+    }
+
+    public string? DurationToText
+    {
+        get => _durationToText;
+        set => SetField(ref _durationToText, value);
     }
 
     public string? StatusMessage

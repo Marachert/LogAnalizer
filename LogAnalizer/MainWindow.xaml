@@ -20,8 +20,10 @@
                     <TextBlock Text="Folder:" VerticalAlignment="Center" Margin="0,0,6,0" />
                     <TextBox Width="420" Text="{Binding LogsFolder}" IsReadOnly="True" />
                     <Button Content="Browse" Margin="8,0,0,0" Padding="12,4" Click="SelectFolder_OnClick" />
-                    <TextBlock Text="Duration &gt;" Margin="24,0,6,0" VerticalAlignment="Center" />
-                    <TextBox Width="120" Text="{Binding DurationFilterText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00" />
+                    <TextBlock Text="Duration from" Margin="24,0,6,0" VerticalAlignment="Center" />
+                    <TextBox Width="120" Text="{Binding DurationFromText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00" />
+                    <TextBlock Text="to" Margin="8,0,6,0" VerticalAlignment="Center" />
+                    <TextBox Width="120" Text="{Binding DurationToText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Format 00:00:00 (optional)" />
                     <Button Content="Search" Margin="8,0,0,0" Padding="12,4" Click="Search_OnClick" />
                     <TextBlock Text="{Binding StatusMessage}" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#666" />
                 </StackPanel>

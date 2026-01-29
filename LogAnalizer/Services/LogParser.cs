@@ -14,7 +14,7 @@ public static class LogParser
     private static readonly Regex InteractionIdRegex = new(@"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", RegexOptions.Compiled);
     private static readonly Regex KeyValueRegex = new(@"(?<key>\w+)=\s*(?<value>.+?)(?=,\s\w+=|$)", RegexOptions.Compiled);
 
-    public static List<DurationTabViewModel> ParseFolder(string folderPath, TimeSpan minDuration)
+    public static List<DurationTabViewModel> ParseFolder(string folderPath, TimeSpan? minDuration, TimeSpan? maxDuration)
     {
         var tabs = new List<DurationTabViewModel>();
 
@@ -42,7 +42,12 @@ public static class LogParser
                     continue;
                 }
 
-                if (duration <= minDuration)
+                if (minDuration.HasValue && duration < minDuration.Value)
+                {
+                    continue;
+                }
+
+                if (maxDuration.HasValue && duration > maxDuration.Value)
                 {
                     continue;
                 }
