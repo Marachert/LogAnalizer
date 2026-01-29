@@ -88,12 +88,15 @@ public static class LogParser
                     index++;
                 }
 
-                var header = BuildHeader(line, archivedCount, duration);
+                var timestampText = ExtractTimestamp(line, out var timestamp);
+                var header = BuildHeader(archivedCount, timestampText, duration);
                 var tab = new DurationTabViewModel
                 {
                     Header = header,
                     AddedLogLine = addedLine.Line ?? string.Empty,
                     DurationLogLine = line,
+                    Duration = duration,
+                    Timestamp = timestamp,
                     InteractionIds = interactionIds
                 };
 
@@ -191,15 +194,26 @@ public static class LogParser
         };
     }
 
-    private static string BuildHeader(string durationLine, int archivedCount, TimeSpan duration)
+    private static string ExtractTimestamp(string durationLine, out DateTime? timestamp)
     {
-        var timestamp = "";
+        timestamp = null;
         var match = TimestampRegex.Match(durationLine);
-        if (match.Success)
+        if (!match.Success)
         {
-            timestamp = match.Groups["timestamp"].Value;
+            return string.Empty;
         }
 
+        var timestampText = match.Groups["timestamp"].Value;
+        if (DateTime.TryParseExact(timestampText, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var parsed))
+        {
+            timestamp = parsed;
+        }
+
+        return timestampText;
+    }
+
+    private static string BuildHeader(int archivedCount, string timestamp, TimeSpan duration)
+    {
         return $"Archived {archivedCount} | {timestamp} | Duration {duration}";
     }
 }

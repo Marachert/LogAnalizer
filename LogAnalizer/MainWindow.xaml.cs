@@ -2,6 +2,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using LogAnalizer.Models;
 using LogAnalizer.Services;
 
 namespace LogAnalizer;
@@ -14,6 +15,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = _viewModel;
+        _viewModel.PropertyChanged += ViewModelOnPropertyChanged;
     }
 
     private void Window_OnDragOver(object sender, System.Windows.DragEventArgs e)
@@ -89,7 +91,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var tabs = LogParser.ParseFolder(_viewModel.LogsFolder, minDuration, maxDuration);
+        var tabs = SortTabs(LogParser.ParseFolder(_viewModel.LogsFolder, minDuration, maxDuration));
         _viewModel.DurationTabs.Clear();
         foreach (var tab in tabs)
         {
@@ -115,5 +117,43 @@ public partial class MainWindow : Window
 
         duration = parsed;
         return true;
+    }
+
+    private void ViewModelOnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(MainViewModel.SelectedDurationSortOption))
+        {
+            return;
+        }
+
+        if (_viewModel.DurationTabs.Count == 0)
+        {
+            return;
+        }
+
+        var sortedTabs = SortTabs(_viewModel.DurationTabs.ToList());
+        _viewModel.DurationTabs.Clear();
+        foreach (var tab in sortedTabs)
+        {
+            _viewModel.DurationTabs.Add(tab);
+        }
+
+        _viewModel.SelectedDurationTab ??= _viewModel.DurationTabs.FirstOrDefault();
+    }
+
+    private IEnumerable<DurationTabViewModel> SortTabs(IEnumerable<DurationTabViewModel> tabs)
+    {
+        var sortType = _viewModel.SelectedDurationSortOption?.SortType ?? DurationSortType.DateDescending;
+        return sortType switch
+        {
+            DurationSortType.DateAscending => tabs.OrderBy(tab => tab.Timestamp ?? DateTime.MinValue)
+                .ThenBy(tab => tab.Duration),
+            DurationSortType.DurationDescending => tabs.OrderByDescending(tab => tab.Duration)
+                .ThenByDescending(tab => tab.Timestamp ?? DateTime.MinValue),
+            DurationSortType.DurationAscending => tabs.OrderBy(tab => tab.Duration)
+                .ThenBy(tab => tab.Timestamp ?? DateTime.MinValue),
+            _ => tabs.OrderByDescending(tab => tab.Timestamp ?? DateTime.MinValue)
+                .ThenByDescending(tab => tab.Duration)
+        };
     }
 }
