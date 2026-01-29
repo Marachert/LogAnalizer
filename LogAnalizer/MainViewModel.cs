@@ -12,6 +12,7 @@ public class MainViewModel : INotifyPropertyChanged
     private string? _durationToText = string.Empty;
     private string? _statusMessage;
     private DurationTabViewModel? _selectedDurationTab;
+    private double _tabsSectionHeight = 520;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -44,6 +45,12 @@ public class MainViewModel : INotifyPropertyChanged
     {
         get => _selectedDurationTab;
         set => SetField(ref _selectedDurationTab, value);
+    }
+
+    public double TabsSectionHeight
+    {
+        get => _tabsSectionHeight;
+        set => SetField(ref _tabsSectionHeight, value);
     }
 
     private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
