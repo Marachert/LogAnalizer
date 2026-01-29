@@ -11,14 +11,10 @@ public class MainViewModel : INotifyPropertyChanged
     private string? _durationFilterText = "00:00:00";
     private string? _statusMessage;
     private DurationTabViewModel? _selectedDurationTab;
-    private string? _pdfFilePath;
-    private string? _pdfStatusMessage;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public ObservableCollection<DurationTabViewModel> DurationTabs { get; } = new();
-    public ObservableCollection<PdfAnalysisResult> PdfAnalysisResults { get; } = new();
-
     public string? LogsFolder
     {
         get => _logsFolder;
@@ -41,18 +37,6 @@ public class MainViewModel : INotifyPropertyChanged
     {
         get => _selectedDurationTab;
         set => SetField(ref _selectedDurationTab, value);
-    }
-
-    public string? PdfFilePath
-    {
-        get => _pdfFilePath;
-        set => SetField(ref _pdfFilePath, value);
-    }
-
-    public string? PdfStatusMessage
-    {
-        get => _pdfStatusMessage;
-        set => SetField(ref _pdfStatusMessage, value);
     }
 
     private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

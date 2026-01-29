@@ -6,11 +6,6 @@
         Drop="Window_OnDrop"
         DragOver="Window_OnDragOver">
     <Grid Margin="12">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="2*" />
-        </Grid.RowDefinitions>
-
         <Border BorderBrush="#CCCCCC" BorderThickness="1" Padding="12" CornerRadius="6">
             <Grid>
                 <Grid.RowDefinitions>
@@ -41,16 +36,22 @@
                         <DataTemplate>
                             <Grid Margin="0,8,0,0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Background="#F9F9F9" CornerRadius="4">
+                                <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Background="#F9F9F9" CornerRadius="4" MinHeight="60">
                                     <TextBlock Text="{Binding AddedLogLine}" TextWrapping="Wrap" />
                                 </Border>
 
-                                <DataGrid Grid.Row="1" ItemsSource="{Binding Interactions}" AutoGenerateColumns="False"
+                                <GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center" Background="#DDD" ResizeBehavior="PreviousAndNext"
+                                              ShowsPreview="True" />
+
+                                <DataGrid Grid.Row="2" ItemsSource="{Binding Interactions}" AutoGenerateColumns="False"
                                           CanUserSortColumns="True" CanUserResizeColumns="True" IsReadOnly="True" Margin="0,8,0,8">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="40" />
@@ -65,42 +66,17 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
 
-                                <Border Grid.Row="2" BorderBrush="#DDD" BorderThickness="1" Padding="8" Background="#F9F9F9" CornerRadius="4">
+                                <GridSplitter Grid.Row="3" Height="6" HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center" Background="#DDD" ResizeBehavior="PreviousAndNext"
+                                              ShowsPreview="True" />
+
+                                <Border Grid.Row="4" BorderBrush="#DDD" BorderThickness="1" Padding="8" Background="#F9F9F9" CornerRadius="4" MinHeight="60">
                                     <TextBlock Text="{Binding DurationLogLine}" TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="1" BorderBrush="#CCCCCC" BorderThickness="1" Padding="12" CornerRadius="6" Margin="0,12,0,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="PDF network events analysis" FontWeight="SemiBold" />
-
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,8">
-                    <TextBlock Text="PDF file:" VerticalAlignment="Center" Margin="0,0,6,0" />
-                    <TextBox Width="420" Text="{Binding PdfFilePath}" IsReadOnly="True" />
-                    <Button Content="Load PDF" Margin="8,0,0,0" Padding="12,4" Click="LoadPdf_OnClick" />
-                    <TextBlock Text="{Binding PdfStatusMessage}" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#666" />
-                </StackPanel>
-
-                <DataGrid Grid.Row="2" ItemsSource="{Binding PdfAnalysisResults}" AutoGenerateColumns="False" IsReadOnly="True"
-                          CanUserResizeColumns="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="40" />
-                        <DataGridTextColumn Header="InteractionId" Binding="{Binding InteractionId}" Width="*" />
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="160" />
-                        <DataGridTextColumn Header="Evidence" Binding="{Binding Evidence}" Width="*" />
-                    </DataGrid.Columns>
-                </DataGrid>
             </Grid>
         </Border>
     </Grid>
