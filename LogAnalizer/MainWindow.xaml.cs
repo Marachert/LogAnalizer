@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using LogAnalizer.Models;
@@ -28,25 +29,25 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Window_OnDragOver(object sender, DragEventArgs e)
+    private void Window_OnDragOver(object sender, System.Windows.DragEventArgs e)
     {
-        e.Effects = DragDropEffects.None;
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        e.Effects = System.Windows.DragDropEffects.None;
+        if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
         {
-            e.Effects = DragDropEffects.Copy;
+            e.Effects = System.Windows.DragDropEffects.Copy;
         }
 
         e.Handled = true;
     }
 
-    private void Window_OnDrop(object sender, DragEventArgs e)
+    private void Window_OnDrop(object sender, System.Windows.DragEventArgs e)
     {
-        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+        if (!e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
         {
             return;
         }
 
-        var items = (string[]?)e.Data.GetData(DataFormats.FileDrop);
+        var items = (string[]?)e.Data.GetData(System.Windows.DataFormats.FileDrop);
         if (items is null || items.Length == 0)
         {
             return;
@@ -103,7 +104,7 @@ public partial class MainWindow : Window
 
     private void LoadPdf_OnClick(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog
+        var dialog = new Microsoft.Win32.OpenFileDialog
         {
             Filter = "PDF files (*.pdf)|*.pdf",
             Title = "Выберите PDF файл"
