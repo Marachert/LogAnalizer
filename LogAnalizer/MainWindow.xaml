@@ -54,6 +54,15 @@
                              Text="{Binding DurationToText, UpdateSourceTrigger=PropertyChanged}"
                              ToolTip="Format 00:00:00" />
 
+                    <TextBlock Text="Sort by"
+                               Margin="16,0,6,0"
+                               VerticalAlignment="Center" />
+
+                    <ComboBox Width="200"
+                              ItemsSource="{Binding DurationSortOptions}"
+                              DisplayMemberPath="Label"
+                              SelectedItem="{Binding SelectedDurationSortOption}" />
+
                     <Button Content="Search"
                             Margin="8,0,0,0"
                             Padding="12,4"
