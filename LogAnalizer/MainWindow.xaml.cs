@@ -71,13 +71,25 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (!TimeSpan.TryParse(_viewModel.DurationFilterText, CultureInfo.InvariantCulture, out var minDuration))
+        if (!TryParseDuration(_viewModel.DurationFromText, out var minDuration))
         {
-            _viewModel.StatusMessage = "Invalid Duration format.";
+            _viewModel.StatusMessage = "Invalid Duration 'from' format.";
             return;
         }
 
-        var tabs = LogParser.ParseFolder(_viewModel.LogsFolder, minDuration);
+        if (!TryParseDuration(_viewModel.DurationToText, out var maxDuration))
+        {
+            _viewModel.StatusMessage = "Invalid Duration 'to' format.";
+            return;
+        }
+
+        if (minDuration.HasValue && maxDuration.HasValue && minDuration > maxDuration)
+        {
+            _viewModel.StatusMessage = "Duration 'from' must be less than or equal to 'to'.";
+            return;
+        }
+
+        var tabs = LogParser.ParseFolder(_viewModel.LogsFolder, minDuration, maxDuration);
         _viewModel.DurationTabs.Clear();
         foreach (var tab in tabs)
         {
@@ -86,5 +98,22 @@ public partial class MainWindow : Window
 
         _viewModel.StatusMessage = $"Tabs found: {tabs.Count}.";
         _viewModel.SelectedDurationTab = _viewModel.DurationTabs.FirstOrDefault();
+    }
+
+    private static bool TryParseDuration(string? text, out TimeSpan? duration)
+    {
+        duration = null;
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return true;
+        }
+
+        if (!TimeSpan.TryParse(text, CultureInfo.InvariantCulture, out var parsed))
+        {
+            return false;
+        }
+
+        duration = parsed;
+        return true;
     }
 }
